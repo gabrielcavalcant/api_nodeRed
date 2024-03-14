@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados do Sensor</title>
+</head>
+<body>
+    <h1>Dados do Sensor</h1>
+    <div id="sensor-data">
+        <!-- Os dados do sensor serão exibidos aqui -->
+    </div>
+    <button id="atualizar">Atualizar</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Função para carregar os dados do sensor
+            function carregarDadosSensor() {
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/update/', // URL da sua API
+                    type: 'GET',
+                    success: function(response) {
+                        // Limpar os dados antigos
+                        $('#sensor-data').empty();
+                        // Adicionar os novos dados
+                        $('#sensor-data').append('<p>Sensor: ' + response.Sensor + '</p>');
+                        $('#sensor-data').append('<p>Botão: ' + response.Botao + '</p>');
+                        $('#sensor-data').append('<p>Liga Robô: ' + response.LigaRobo + '</p>');
+                        $('#sensor-data').append('<p>Reset Contador: ' + response.ResetContador + '</p>');
+                        $('#sensor-data').append('<p>Valor Contagem: ' + response["Valor Contagem"] + '</p>');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Erro ao buscar os dados do sensor:', error);
+                    }
+                });
+            }
+
+            // Carregar os dados do sensor quando a página for carregada
+            carregarDadosSensor();
+
+            // Adicionar um listener para o botão de atualização
+            $('#atualizar').click(function() {
+                carregarDadosSensor();
+            });
+        });
+    </script>
+</body>
+</html>
